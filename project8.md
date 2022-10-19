@@ -12,7 +12,7 @@
     ```
     sudo apt update
     sudo apt install apache2 -y
-    sudo apt-get install libxml2-dev
+    sudo apt-get install libxml2-dev -y
     ```
 - Enable modules for load balancing:
     ```
@@ -45,7 +45,12 @@
     ```
 - Unmount each webserver's log directory from the NFS server (if mounted). On each webserver, run:
     ```
+    sudo systemctl stop httpd
     sudo umount -f /var/log/httpd
+    sudo vi /etc/fstab
+    # Comment out the logs mount
+    sudo systemctl start httpd
+    sudo mount -a
     ```
 - Visit `http://<apache-lb-public-ip-address>/index.php` in browser to test the load balancer
 - Refresh page several times to get traffic distributed across member webservers
